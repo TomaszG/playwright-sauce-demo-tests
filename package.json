@@ -1,0 +1,28 @@
+{
+  "name": "sauce",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "21",
+    "pnpm": "8"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "playwright:test": "playwright test",
+    "playwright:ui": "playwright test --ui",
+    "playwright:debug": "playwright test --debug"
+  },
+  "author": "Tomasz Grazynski",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "1.39.0",
+    "@types/node": "20.8.10",
+    "@typescript-eslint/eslint-plugin": "6.9.1",
+    "@typescript-eslint/parser": "6.9.1",
+    "eslint": "8.53.0",
+    "eslint-config-prettier": "9.0.0",
+    "prettier": "3.0.3",
+    "typescript": "5.2.2"
+  }
+}
