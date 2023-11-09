@@ -18,13 +18,13 @@ const getSortFunction = (sortOption: SortOption) => {
   }
 }
 
-test('should display inventory items', async ({ inventoryPage }) => {
+test('should display inventory items @high', async ({ inventoryPage }) => {
   // when & then
   const inventoryItems = await inventoryPage.getInventoryItems()
   expect(inventoryItems).toHaveLength(6) // ideally the expected number should be taken from the API
 })
 
-test('should display inventory item details', async ({ inventoryPage }) => {
+test('should display inventory item details @medium', async ({ inventoryPage }) => {
   // given
   // TODO: ideally the expected item(s) should be taken from the API
   const expectedItem = {
@@ -44,7 +44,7 @@ test('should display inventory item details', async ({ inventoryPage }) => {
 })
 
 Object.keys(SortOption).forEach((sortOptionKey) => {
-  test(`should sort inventory items by ${sortOptionKey}`, async ({ inventoryPage }) => {
+  test(`should sort inventory items by ${sortOptionKey} @low`, async ({ inventoryPage }) => {
     // given
     const sortOption = SortOption[sortOptionKey]
 
@@ -64,7 +64,7 @@ Object.keys(SortOption).forEach((sortOptionKey) => {
   })
 })
 
-test('should add inventory item to cart', async ({ inventoryPage }) => {
+test('should add inventory item to cart @high', async ({ inventoryPage }) => {
   // given
   const item = await inventoryPage.getInventoryItemByName('Sauce Labs Backpack')
 
@@ -76,7 +76,7 @@ test('should add inventory item to cart', async ({ inventoryPage }) => {
   await inventoryPage.expectNumberOfShoppingCartItemsToBe(1)
 })
 
-test('should remove inventory item from cart', async ({ inventoryPage }) => {
+test('should remove inventory item from cart @medium', async ({ inventoryPage }) => {
   // given
   const item = await inventoryPage.getInventoryItemByName('Sauce Labs Backpack')
   await item.addToCart()
@@ -89,7 +89,7 @@ test('should remove inventory item from cart', async ({ inventoryPage }) => {
   await inventoryPage.expectNumberOfShoppingCartItemsToBe(0)
 })
 
-test('should add multiple inventory items to cart', async ({ inventoryPage }) => {
+test('should add multiple inventory items to cart @high', async ({ inventoryPage }) => {
   // given
   const expectedNumberOfItems = 3
   const itemsToAdd = (await inventoryPage.getInventoryItems()).slice(0, expectedNumberOfItems)
@@ -105,7 +105,7 @@ test('should add multiple inventory items to cart', async ({ inventoryPage }) =>
   await inventoryPage.expectNumberOfShoppingCartItemsToBe(expectedNumberOfItems)
 })
 
-test('should open shopping cart when shopping cart icon is clicked', async ({ inventoryPage }) => {
+test('should open shopping cart when shopping cart icon is clicked @high', async ({ inventoryPage }) => {
   // when
   const shoppingCartPage = await inventoryPage.goToShoppingCart()
 

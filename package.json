@@ -11,7 +11,10 @@
     "lint:fix": "eslint . --fix",
     "playwright:test": "playwright test",
     "playwright:ui": "playwright test --ui",
-    "playwright:debug": "playwright test --debug"
+    "playwright:debug": "playwright test --debug",
+    "playwright:test:high-priority": "playwright test --grep @high",
+    "playwright:test:medium-priority": "playwright test --grep @medium",
+    "playwright:test:low-priority": "playwright test --grep @low"
   },
   "author": "Tomasz Grazynski",
   "license": "ISC",

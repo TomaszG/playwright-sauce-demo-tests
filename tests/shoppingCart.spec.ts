@@ -1,6 +1,6 @@
 import { test, expect } from './fixtures/inventory.fixture'
 
-test('should display added inventory item in the shopping cart in order they were added to the cart', async ({ inventoryPage }) => {
+test('should display added inventory item in the shopping cart in order they were added to the cart @high', async ({ inventoryPage }) => {
   // given
   const expectedItemsInCart: {
     name: string

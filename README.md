@@ -11,6 +11,12 @@
 ## Running the tests
 1. Run `pnpm run playwright:test` to run all the tests on Chrome, Firefox, and Safari.
 2. Run `pnpm run playwright:ui` to open the Playwright in UI mode.
+3. Run one of
+     * `pnpm run playwright:test:high-priority`
+     * `pnpm run playwright:test:medium-priority`
+     * `pnpm run playwright:test:low-priority`
+
+    to run only tests with @high or @medium or @low priority annotation.
 
 ## Tests structure
 * The tests are located in the [tests](/tests) folder.
