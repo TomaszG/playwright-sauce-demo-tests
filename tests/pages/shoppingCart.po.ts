@@ -4,7 +4,7 @@ import { Inventory } from './inventory.po'
 import { CartItem } from './shared/cartItem.po'
 import { Checkout } from './checkout.po'
 
-class ShoppingCartItem extends CartItem {
+export class ShoppingCartItem extends CartItem {
   readonly itemRemoveButton: Locator
 
   constructor(locator: Locator) {
@@ -19,6 +19,7 @@ class ShoppingCartItem extends CartItem {
 
 export class ShoppingCart {
   readonly page: Page
+  readonly title: Locator
   readonly hamburgerMenu: Locator
   readonly shoppingCartBadge: Locator
   readonly shoppingCartItems: Locator
@@ -27,6 +28,7 @@ export class ShoppingCart {
 
   constructor(page: Page) {
     this.page = page
+    this.title = page.locator('.title')
     this.hamburgerMenu = page.locator('.bm-burger-button')
     this.shoppingCartBadge = page.locator('.shopping_cart_badge')
     this.shoppingCartItems = page.locator('.cart_item')
@@ -34,14 +36,24 @@ export class ShoppingCart {
     this.checkoutButton = page.getByTestId('checkout')
   }
 
+  async expectToBeVisible() {
+    await expect(this.page).toHaveURL('/cart.html')
+    await expect(this.title).toHaveText('Your Cart')
+  }
+
   async openHamburgerMenu() {
     await this.hamburgerMenu.click()
     return new HamburgerMenu(this.page)
   }
 
-  async getNumberOfShoppingCartItems() {
-    const badgeText = await this.shoppingCartBadge.innerText()
-    return parseInt(badgeText)
+  async expectNumberOfShoppingCartItemsToBe(expectedNumberOfItems: number) {
+    if (expectedNumberOfItems === 0) {
+      await expect(this.shoppingCartBadge).toHaveCount(0)
+
+      return
+    }
+
+    await expect(this.shoppingCartBadge).toHaveText(expectedNumberOfItems.toString())
   }
 
   async getShoppingCartItems() {
@@ -51,9 +63,7 @@ export class ShoppingCart {
 
   async getShoppingCartItemByName(name: string) {
     const shoppingCartItems = await this.getShoppingCartItems()
-    const item = shoppingCartItems.find(
-      async (item) => (await item.itemName.innerText()) === name
-    )
+    const item = shoppingCartItems.find(async (item) => (await item.itemName.innerText()) === name)
     if (!item) {
       throw new Error(`Shopping cart item with name "${name}" not found`)
     }

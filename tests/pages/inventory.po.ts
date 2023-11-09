@@ -9,7 +9,7 @@ export enum SortOption {
   PriceHighToLow = 'hilo',
 }
 
-class InventoryItem {
+export class InventoryItem {
   readonly inventoryItem: Locator
   readonly inventoryItemImage: Locator
   readonly inventoryItemName: Locator
@@ -20,24 +20,16 @@ class InventoryItem {
 
   constructor(locator: Locator) {
     this.inventoryItem = locator
-    this.inventoryItemImage = this.inventoryItem.locator(
-      'img.inventory_item_img'
-    )
+    this.inventoryItemImage = this.inventoryItem.locator('img.inventory_item_img')
     this.inventoryItemName = this.inventoryItem.locator('.inventory_item_name')
-    this.inventoryItemDescription = this.inventoryItem.locator(
-      '.inventory_item_desc'
-    )
-    this.inventoryItemPrice = this.inventoryItem.locator(
-      '.inventory_item_price'
-    )
-    this.inventoryItemAddToCartButton =
-      this.inventoryItem.locator('.btn_primary')
-    this.inventoryItemRemoveButton =
-      this.inventoryItem.locator('.btn_secondary')
+    this.inventoryItemDescription = this.inventoryItem.locator('.inventory_item_desc')
+    this.inventoryItemPrice = this.inventoryItem.locator('.inventory_item_price')
+    this.inventoryItemAddToCartButton = this.inventoryItem.locator('.btn_primary')
+    this.inventoryItemRemoveButton = this.inventoryItem.locator('.btn_secondary')
   }
 
   async addToCart() {
-    await this.inventoryItemAddToCartButton.click()
+    return this.inventoryItemAddToCartButton.click()
   }
 
   async removeFromCart() {
@@ -45,11 +37,13 @@ class InventoryItem {
   }
 
   async expectToBeInCart() {
-    await expect(this.inventoryItemRemoveButton).toBeVisible()
+    await expect(this.inventoryItemRemoveButton).toHaveCount(1)
+    await expect(this.inventoryItemAddToCartButton).toHaveCount(0)
   }
 
   async expectNotToBeInCart() {
-    await expect(this.inventoryItemAddToCartButton).toBeVisible()
+    await expect(this.inventoryItemAddToCartButton).toHaveCount(1)
+    await expect(this.inventoryItemRemoveButton).toHaveCount(0)
   }
 
   async expectToBeVisible() {
@@ -69,13 +63,9 @@ export class Inventory {
     this.page = page
     this.inventoryItems = page.locator('.inventory_item')
     this.sortSelect = page.getByTestId('product_sort_container')
-    this.shoppingCartLink = page.locator('.shopping_cart_container')
+    this.shoppingCartLink = page.locator('.shopping_cart_link')
     this.shoppingCartBadge = page.locator('.shopping_cart_badge')
     this.hamburgerMenu = page.locator('.bm-burger-button')
-  }
-
-  async goto() {
-    await this.page.goto('/')
   }
 
   async getInventoryItems() {
@@ -85,9 +75,7 @@ export class Inventory {
 
   async getInventoryItemByName(name: string) {
     const inventoryItems = await this.getInventoryItems()
-    const item = inventoryItems.find(
-      async (item) => (await item.inventoryItemName.innerText()) === name
-    )
+    const item = inventoryItems.find(async (item) => (await item.inventoryItemName.innerText()) === name)
     if (!item) {
       throw new Error(`Inventory item with name "${name}" not found`)
     }
@@ -103,9 +91,14 @@ export class Inventory {
     return new ShoppingCart(this.page)
   }
 
-  async getNumberOfShoppingCartItems() {
-    const badgeText = await this.shoppingCartBadge.innerText()
-    return parseInt(badgeText)
+  async expectNumberOfShoppingCartItemsToBe(expectedNumberOfItems: number) {
+    if (expectedNumberOfItems === 0) {
+      await expect(this.shoppingCartBadge).toHaveCount(0)
+
+      return
+    }
+
+    await expect(this.shoppingCartBadge).toHaveText(expectedNumberOfItems.toString())
   }
 
   async openHamburgerMenu() {

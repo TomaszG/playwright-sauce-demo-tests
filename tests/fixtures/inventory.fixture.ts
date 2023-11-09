@@ -4,6 +4,7 @@ import { UserName } from '../pages/login.po'
 
 export const test = base.extend<{ inventoryPage: Inventory }>({
   inventoryPage: async ({ loginPage }, use) => {
+    // TODO: ideally the login should be done via API
     await loginPage.login(UserName.standard)
     const inventoryPage = await loginPage.expectSuccessfulLogin()
     await use(inventoryPage)

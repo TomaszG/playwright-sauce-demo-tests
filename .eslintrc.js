@@ -1,10 +1,5 @@
 module.exports = {
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:playwright/recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:playwright/recommended', 'prettier'],
   env: {
     node: true,
   },
@@ -12,6 +7,6 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   root: true,
   rules: {
-    indent: ['error', 2],
+    'playwright/expect-expect': 'off',
   },
 }
